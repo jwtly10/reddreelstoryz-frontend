@@ -1,6 +1,6 @@
 import {useAuth} from './contexts/AuthContext'
-import NavbarComponent from './components/NavbarComponent'
-import {useEffect} from "react";
+import  {useEffect} from "react";
+import AppRouter from "./router/AppRouter.tsx";
 
 function App() {
     const {login, setAuthToken, setIsAuthenticated, isAuthenticated} = useAuth()
@@ -15,7 +15,7 @@ function App() {
     }, [login, isAuthenticated]);
 
   return (
-      <NavbarComponent />
+      <AppRouter />
   )
 }
 

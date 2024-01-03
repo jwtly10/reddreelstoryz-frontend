@@ -2,6 +2,7 @@ import React, {createContext, useContext, useState, ReactNode, useEffect} from '
 import axios, {AxiosError} from "axios";
 import AuthError from "../exceptions/AuthError.ts";
 import SessionExpiredModalComponent from "../components/SessionExpiredModalComponent.tsx";
+import {jwtDecode} from "jwt-decode";
 
 interface AuthContextProps {
   isAuthenticated: boolean
@@ -103,18 +104,36 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const validateTokenLocally = (token: string) => {
+    try {
+      const decodedToken = jwtDecode(token)
+        const currentTime = Date.now() / 1000
+      if (decodedToken.exp){
+        return decodedToken.exp > currentTime
+      }
+
+        return false
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      return false;
+    }
+  }
+
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (!storedToken) {
       console.log("No token stored, no current session")
       return;
     }
-    validateToken(storedToken).then((isValid) => {
-      if (!isValid) {
+    // validateToken(storedToken).then((isValid) => {
+    //   if (!isValid) {
+    //     console.log("Token is not valid, please log out")
+    //     setShowSessionsExpiredModal(true)
+    //   }
+      if (!validateTokenLocally(storedToken)) {
         console.log("Token is not valid, please log out")
         setShowSessionsExpiredModal(true)
       }
-    });
   }, [validateToken]);
 
   const handleAuthError = (error: AxiosError)=> {

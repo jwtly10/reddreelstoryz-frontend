@@ -2,6 +2,7 @@ import {Form, Input, Modal} from 'antd'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import AuthError from '../exceptions/AuthError.ts'
+import {useNavigate} from "react-router-dom";
 
 function LoginModalComponent({
   handleClose,
@@ -10,6 +11,7 @@ function LoginModalComponent({
   handleClose: () => void
   open: boolean
 }) {
+  const navigate = useNavigate()
   const { login, signup } = useAuth()
   const [confirmLoading, setConfirmLoading] = useState(false)
   const [firstname, setFirstname] = useState('')
@@ -30,17 +32,18 @@ function LoginModalComponent({
       try {
         await signup(firstname, lastname, email, password)
         handleClose()
+        navigate("/dashboard")
       } catch (error: any) {
         setErrorText(error.message)
       } finally {
         setConfirmLoading(false)
-
       }
     } else {
       try {
         setConfirmLoading(true)
         await login(email, password)
         handleClose()
+        navigate("/dashboard")
       } catch (error: any) {
         if (error instanceof AuthError){
             setErrorText(error.message)
@@ -168,7 +171,6 @@ function LoginModalComponent({
                 />
               </Form.Item>
             </Form>
-
 
             <p>
               Don't have an account?{' '}
