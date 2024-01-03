@@ -1,16 +1,31 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, {createContext, useContext, useState, ReactNode, useEffect} from 'react'
+import axios, {AxiosError} from "axios";
+import AuthError from "../exceptions/AuthError.ts";
+import SessionExpiredModalComponent from "../components/SessionExpiredModalComponent.tsx";
 
 interface AuthContextProps {
   isAuthenticated: boolean
   login: (email: string, password: string) => Promise<void>
   signup: (
-    firstName: string,
-    lastName: string,
+    firstname: string,
+    lastname: string,
     email: string,
     password: string,
   ) => Promise<void>
   logout: () => void
+  setAuthToken: (token: string | null) => void
+  setIsAuthenticated: (isAuthenticated: boolean) => void
 }
+
+const setAuthToken = (token: string | null) => {
+  if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common['Authorization'];
+  }
+};
+
+const apiBaseUrl = import.meta.env.VITE_SERVER_URL as string;
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
@@ -20,40 +35,113 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [showSessionsExpiredModal, setShowSessionsExpiredModal] = useState(false)
 
   const login = async (email: string, password: string): Promise<void> => {
-    console.log('Logging in')
+    try {
+      const response = await axios.post(`${apiBaseUrl}/api/v1/auth/authenticate`, {
+        email,
+        password
+      });
 
-    await new Promise((resolve) => setTimeout(resolve, 5000))
+      const token: string = response.data.token
+      localStorage.setItem('token', token)
+      setAuthToken(token)
+      setIsAuthenticated(true)
 
-    // Implement your login logic here
-    // Send a request to your Java server to authenticate the user and obtain a JWT
-    // If successful, set isAuthenticated to true
-    setIsAuthenticated(true)
+    } catch (error: any) {
+        handleAuthError(error)
+    }
   }
 
   const signup = async (
-    firstName: string,
-    lastName: string,
+    firstname: string,
+    lastname: string,
     email: string,
     password: string,
   ) => {
     console.log('Signing up')
-    await new Promise((resolve) => setTimeout(resolve, 5000))
-    setIsAuthenticated(true)
+    try{
+      const response = await axios.post(`${apiBaseUrl}/api/v1/auth/register`, {
+        firstname,
+        lastname,
+        email,
+        password,
+      });
+      const token: string = response.data.token
+      localStorage.setItem('token', token)
+      setAuthToken(token)
+      setIsAuthenticated(true)
+    } catch (error: any) {
+      handleAuthError(error)
+    }
   }
 
   const logout = () => {
-    // Implement your logout logic here
-    // Send a request to your server to invalidate the JWT
-    // If successful, set isAuthenticated to false
+    console.log("Logging out")
+    // Delete local storage token
+    localStorage.removeItem('token')
     setIsAuthenticated(false)
   }
 
+  const validateToken = async (token: string | null): Promise<boolean> => {
+    if (!token) {
+      // No token, consider it invalid
+      return false;
+    }
+
+    try {
+      const response = await axios.post(`${apiBaseUrl}/api/v1/auth/validate`, {
+        token,
+      });
+
+      return response.status === 200;
+
+    } catch (error) {
+      console.error('Token validation failed:', error);
+      return false; // Consider it invalid in case of any error
+    }
+  };
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (!storedToken) {
+      console.log("No token stored, no current session")
+      return;
+    }
+    validateToken(storedToken).then((isValid) => {
+      if (!isValid) {
+        console.log("Token is not valid, please log out")
+        setShowSessionsExpiredModal(true)
+      }
+    });
+  }, [validateToken]);
+
+  const handleAuthError = (error: AxiosError)=> {
+    if (error.response?.status === 401 || error.response?.status === 409) {
+      const errorResponse = error.response.data as {error: string} | undefined
+      if (errorResponse){
+        const errorMessage = errorResponse.error
+        console.log(`Login failed: ${errorMessage}}`);
+        throw new AuthError(errorMessage)
+      } else {
+        console.log(`Login failed: Unknown Error`);
+        throw new Error('Unknown Error')
+      }
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, signup, logout }}>
+
+    <AuthContext.Provider value={{ isAuthenticated, login, signup, logout, setAuthToken, setIsAuthenticated }}>
       {children}
+      <SessionExpiredModalComponent showModal={showSessionsExpiredModal}
+                                    handleOk={() => {
+                                      setShowSessionsExpiredModal(false);
+                                      logout()
+                                    }}/>
     </AuthContext.Provider>
+
   )
 }
 

@@ -1,6 +1,7 @@
 import {Form, Input, Modal} from 'antd'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import AuthError from '../exceptions/AuthError.ts'
 
 function LoginModalComponent({
   handleClose,
@@ -33,6 +34,7 @@ function LoginModalComponent({
         setErrorText(error.message)
       } finally {
         setConfirmLoading(false)
+
       }
     } else {
       try {
@@ -40,7 +42,12 @@ function LoginModalComponent({
         await login(email, password)
         handleClose()
       } catch (error: any) {
-        setErrorText(error.message)
+        if (error instanceof AuthError){
+            setErrorText(error.message)
+        } else {
+            console.log(error)
+            setErrorText('Something went wrong')
+        }
       } finally {
         setConfirmLoading(false)
       }
@@ -86,6 +93,9 @@ function LoginModalComponent({
               <Form.Item
                 label='Last name'
                 name='lastname'
+                rules={[
+                  { required: true, message: 'Please input your last name!' },
+                ]}
               >
                 <Input
                   value={lastname}
