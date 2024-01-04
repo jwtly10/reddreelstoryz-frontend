@@ -26,6 +26,10 @@ const setAuthToken = (token: string | null) => {
   }
 };
 
+const removeAuthToken = () => {
+    delete axios.defaults.headers.common['Authorization'];
+}
+
 const apiBaseUrl = import.meta.env.VITE_SERVER_URL as string;
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
@@ -37,6 +41,24 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [showSessionsExpiredModal, setShowSessionsExpiredModal] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    console.log("Are we checking for a token?")
+    if (!storedToken) {
+      console.log("No token stored, no current session")
+    } else {
+      if (validateTokenLocally(storedToken)) {
+        setIsAuthenticated(true)
+      } else {
+        console.log("Token is not valid, please log out")
+        setShowSessionsExpiredModal(true)
+      }
+    }
+
+    setLoading(false)
+  }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
@@ -82,27 +104,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     console.log("Logging out")
     // Delete local storage token
     localStorage.removeItem('token')
+    // Remove token from axios
+    removeAuthToken()
     setIsAuthenticated(false)
   }
 
-  const validateToken = async (token: string | null): Promise<boolean> => {
-    if (!token) {
-      // No token, consider it invalid
-      return false;
-    }
-
-    try {
-      const response = await axios.post(`${apiBaseUrl}/api/v1/auth/validate`, {
-        token,
-      });
-
-      return response.status === 200;
-
-    } catch (error) {
-      console.error('Token validation failed:', error);
-      return false; // Consider it invalid in case of any error
-    }
-  };
+  // const validateToken = async (token: string | null): Promise<boolean> => {
+  //   if (!token) {
+  //     // No token, consider it invalid
+  //     return false;
+  //   }
+  //
+  //   try {
+  //     const response = await axios.post(`${apiBaseUrl}/api/v1/auth/validate`, {
+  //       token,
+  //     });
+  //
+  //     return response.status === 200;
+  //
+  //   } catch (error) {
+  //     console.error('Token validation failed:', error);
+  //     return false; // Consider it invalid in case of any error
+  //   }
+  // };
 
   const validateTokenLocally = (token: string) => {
     try {
@@ -119,22 +143,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (!storedToken) {
-      console.log("No token stored, no current session")
-      return;
-    }
-    // validateToken(storedToken).then((isValid) => {
-    //   if (!isValid) {
-    //     console.log("Token is not valid, please log out")
-    //     setShowSessionsExpiredModal(true)
-    //   }
-      if (!validateTokenLocally(storedToken)) {
-        console.log("Token is not valid, please log out")
-        setShowSessionsExpiredModal(true)
-      }
-  }, [validateToken]);
 
   const handleAuthError = (error: AxiosError)=> {
     if (error.response?.status === 401 || error.response?.status === 409) {
@@ -153,12 +161,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   return (
 
     <AuthContext.Provider value={{ isAuthenticated, login, signup, logout, setAuthToken, setIsAuthenticated }}>
-      {children}
-      <SessionExpiredModalComponent showModal={showSessionsExpiredModal}
-                                    handleOk={() => {
-                                      setShowSessionsExpiredModal(false);
-                                      logout()
-                                    }}/>
+      {loading ? null : (
+          <>
+            {children}
+            <SessionExpiredModalComponent showModal={showSessionsExpiredModal}
+                                          handleOk={() => {
+                                            setShowSessionsExpiredModal(false);
+                                            logout()
+                                          }}/>
+          </>
+      )}
     </AuthContext.Provider>
 
   )

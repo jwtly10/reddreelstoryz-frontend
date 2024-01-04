@@ -11,3 +11,27 @@
 .error{
     color: red;
 }
+
+/*!* Default size for smaller screens *!*/
+@media screen and (min-width: 600px) {
+    .ant-card-cover img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/*!* Larger size for bigger screens *!*/
+@media screen and (min-width: 1200px) {
+    .ant-card-cover img {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    .ant-card{
+        width: 400px !important;
+    }
+}
+
+.ant-card p {
+    margin: 0;
+}

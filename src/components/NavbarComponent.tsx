@@ -56,6 +56,9 @@ function NavbarComponent() {
                 <Nav.Link as={Link} to={"/generate"} className="text-decoration-none text-white">
                   Generate
                 </Nav.Link>
+                <Nav.Link as={Link} to={"/history"} className="text-decoration-none text-white">
+                  History
+                </Nav.Link>
                 <Nav.Link onClick={handleLogoutButtonClick}>Logout</Nav.Link>
               </Nav>
             ) : (
