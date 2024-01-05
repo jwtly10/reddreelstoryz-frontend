@@ -1,14 +1,23 @@
+body {
+    background-color: rgb(20, 20, 20);
+}
+
+.navbar {
+    background-color: rgb(20, 20, 20) !important;
+    border-bottom: solid #164c7e 3px;
+}
+
 .link {
-  color: #007bff; /* Link color */
-  text-decoration: underline; /* Underline to mimic a link */
-  cursor: pointer; /* Show pointer cursor on hover */
+    color: #007bff; /* Link color */
+    text-decoration: underline; /* Underline to mimic a link */
+    cursor: pointer; /* Show pointer cursor on hover */
 }
 
 .link:hover {
-  text-decoration: none; /* Remove underline on hover if desired */
+    text-decoration: none; /* Remove underline on hover if desired */
 }
 
-.error{
+.error {
     color: red;
 }
 
@@ -21,13 +30,13 @@
 }
 
 /*!* Larger size for bigger screens *!*/
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1400px) {
     .ant-card-cover img {
         width: 100% !important;
         height: auto !important;
     }
 
-    .ant-card{
+    .ant-card {
         width: 400px !important;
     }
 }
