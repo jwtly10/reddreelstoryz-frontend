@@ -1,10 +1,12 @@
 declare type Video = {
   videoId: string;
+  title: string;
   fileName: string;
   fileUrl: string;
   length: int;
   state: string;
   uploadDate: string;
+  created: string;
 };
 
 declare type VideoData = {
