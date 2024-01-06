@@ -1,76 +1,76 @@
-import {Form, Input, Modal} from 'antd'
-import { useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
-import AuthError from '../exceptions/AuthError.ts'
-import {useNavigate} from "react-router-dom";
+import { Form, Input, Modal } from "antd";
+import { useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
+import AuthError from "../exceptions/AuthError.ts";
+import { useNavigate } from "react-router-dom";
 
 function LoginModalComponent({
   handleClose,
   open,
 }: {
-  handleClose: () => void
-  open: boolean
+  handleClose: () => void;
+  open: boolean;
 }) {
-  const navigate = useNavigate()
-  const { login, signup } = useAuth()
-  const [confirmLoading, setConfirmLoading] = useState(false)
-  const [firstname, setFirstname] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [errorText, setErrorText] = useState('')
-  const [showSignup, setShowSignup] = useState(false)
+  const navigate = useNavigate();
+  const { login, signup } = useAuth();
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorText, setErrorText] = useState("");
+  const [showSignup, setShowSignup] = useState(false);
 
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
 
   // TODO: Fix types
   const handleOk = async () => {
-    if (!email || !password) return setErrorText('Please fill in all required fields')
+    if (!email || !password)
+      return setErrorText("Please fill in all required fields");
 
     if (showSignup) {
-      setConfirmLoading(true)
+      setConfirmLoading(true);
       try {
-        await signup(firstname, lastname, email, password)
-        handleClose()
-        navigate("/dashboard")
+        await signup(firstname, lastname, email, password);
+        handleClose();
+        navigate("/history");
       } catch (error: any) {
-        setErrorText(error.message)
+        setErrorText(error.message);
       } finally {
-        setConfirmLoading(false)
+        setConfirmLoading(false);
       }
     } else {
       try {
-        setConfirmLoading(true)
-        await login(email, password)
-        handleClose()
-        navigate("/dashboard")
+        setConfirmLoading(true);
+        await login(email, password);
+        handleClose();
+        navigate("/history");
       } catch (error: any) {
-        if (error instanceof AuthError){
-            setErrorText(error.message)
+        if (error instanceof AuthError) {
+          setErrorText(error.message);
         } else {
-            console.log(error)
-            setErrorText('Something went wrong')
+          console.log(error);
+          setErrorText("Something went wrong");
         }
       } finally {
-        setConfirmLoading(false)
+        setConfirmLoading(false);
       }
     }
-  }
+  };
 
   const handleSignupButtonClick = () => {
-    setShowSignup(!showSignup)
-  }
+    setShowSignup(!showSignup);
+  };
 
   const handleCloseClick = () => {
-    if (confirmLoading) return
-    handleClose()
-  }
-
+    if (confirmLoading) return;
+    handleClose();
+  };
 
   return (
     <>
       <Modal
-        title={showSignup ? 'Sign up' : 'Login'}
+        title={showSignup ? "Sign up" : "Login"}
         centered
         open={open}
         onOk={handleOk}
@@ -79,12 +79,12 @@ function LoginModalComponent({
       >
         {showSignup ? (
           <>
-            <Form layout='vertical' form={form} name='signup-login-form'>
+            <Form layout="vertical" form={form} name="signup-login-form">
               <Form.Item
-                label='First name'
-                name='firstname'
+                label="First name"
+                name="firstname"
                 rules={[
-                  { required: true, message: 'Please input your first name!' },
+                  { required: true, message: "Please input your first name!" },
                 ]}
               >
                 <Input
@@ -94,10 +94,10 @@ function LoginModalComponent({
               </Form.Item>
 
               <Form.Item
-                label='Last name'
-                name='lastname'
+                label="Last name"
+                name="lastname"
                 rules={[
-                  { required: true, message: 'Please input your last name!' },
+                  { required: true, message: "Please input your last name!" },
                 ]}
               >
                 <Input
@@ -107,10 +107,10 @@ function LoginModalComponent({
               </Form.Item>
 
               <Form.Item
-                label='Email'
-                name='email'
+                label="Email"
+                name="email"
                 rules={[
-                  { required: true, message: 'Please input your email!' },
+                  { required: true, message: "Please input your email!" },
                 ]}
               >
                 <Input
@@ -120,10 +120,10 @@ function LoginModalComponent({
               </Form.Item>
 
               <Form.Item
-                label='Password'
-                name='password'
+                label="Password"
+                name="password"
                 rules={[
-                  { required: true, message: 'Please input your password!' },
+                  { required: true, message: "Please input your password!" },
                 ]}
               >
                 <Input.Password
@@ -134,47 +134,47 @@ function LoginModalComponent({
             </Form>
 
             <p>
-              Already have an account?{' '}
-              <a className='link' onClick={handleSignupButtonClick}>
+              Already have an account?{" "}
+              <a className="link" onClick={handleSignupButtonClick}>
                 Sign In
               </a>
             </p>
           </>
         ) : (
           <>
-            <Form layout='vertical'>
+            <Form layout="vertical">
               <Form.Item
-                label='Email'
-                name='email'
+                label="Email"
+                name="email"
                 rules={[
-                  { required: true, message: 'Please input your email!' },
+                  { required: true, message: "Please input your email!" },
                 ]}
               >
                 <Input
                   value={email}
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Form.Item>
 
               <Form.Item
-                label='Password'
-                name='password'
+                label="Password"
+                name="password"
                 rules={[
-                  { required: true, message: 'Please input your password!' },
+                  { required: true, message: "Please input your password!" },
                 ]}
               >
                 <Input.Password
                   value={password}
-                  style={{ width: '100%' }}
+                  style={{ width: "100%" }}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </Form.Item>
             </Form>
 
             <p>
-              Don't have an account?{' '}
-              <a className='link' onClick={handleSignupButtonClick}>
+              Don't have an account?{" "}
+              <a className="link" onClick={handleSignupButtonClick}>
                 Sign up
               </a>
             </p>
@@ -184,7 +184,7 @@ function LoginModalComponent({
         <p className="error">{errorText}</p>
       </Modal>
     </>
-  )
+  );
 }
 
-export default LoginModalComponent
+export default LoginModalComponent;
