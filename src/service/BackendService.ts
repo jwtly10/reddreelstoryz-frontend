@@ -1,7 +1,58 @@
 import axios from "axios";
-import AuthError from "../exceptions/AuthError.ts";
+import GenerationError from "../exceptions/GenerationError.ts";
 
 const apiBaseUrl = import.meta.env.VITE_SERVER_URL as string;
+
+async function generateFromRedditURL(req: RedditRequest): Promise<string> {
+  try {
+    const response = await axios.post(
+      `${apiBaseUrl}/api/v1/video/generate/reddit`,
+      {
+        url: req.url,
+        backgroundVideo: req.backgroundVideo,
+      },
+    );
+    return response.data.processId;
+  } catch (error: any) {
+    handleGenerationError(error);
+    throw error;
+  }
+}
+
+async function generateFromCustomScript(
+  req: ManualGenRequest,
+): Promise<string> {
+  try {
+    console.log(req);
+    req.backgroundVideo = "TODO";
+    const response = await axios.post(`${apiBaseUrl}/api/v1/video/generate`, {
+      title: req.title,
+      subreddit: req.subreddit,
+      content: req.content,
+      backgroundVideo: req.backgroundVideo,
+    });
+    return response.data.processId;
+  } catch (error: any) {
+    handleGenerationError(error);
+    throw error;
+  }
+}
+
+// function getAvailableBackgroundVideos(): string[] {
+//   return ["TODO"];
+// }
+
+function handleGenerationError(error: any) {
+  const errorResponse = error.response.data as { error: string } | undefined;
+  if (errorResponse) {
+    const errorMessage = errorResponse.error;
+    console.log(`Generation failed: ${errorMessage}}`);
+    throw new GenerationError(errorMessage);
+  } else {
+    console.log(`Generation failed: Unknown Error`);
+    throw new Error("Unknown Error");
+  }
+}
 
 async function getHistory(): Promise<VideoData[]> {
   try {
@@ -11,11 +62,8 @@ async function getHistory(): Promise<VideoData[]> {
     console.log(videos);
     return videos;
   } catch (error) {
-    if (error instanceof AuthError) {
-      console.log(error.message);
-    } else {
-      console.log("Error fetching history: " + error);
-    }
+    // handle error
+    console.log("Error fetching history: " + error);
   }
 
   return [];
@@ -41,4 +89,9 @@ async function downloadVideo(processId: string) {
   }
 }
 
-export { getHistory, downloadVideo };
+export {
+  getHistory,
+  downloadVideo,
+  generateFromRedditURL,
+  generateFromCustomScript,
+};
