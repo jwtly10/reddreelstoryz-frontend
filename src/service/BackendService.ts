@@ -71,8 +71,10 @@ async function getHistory(): Promise<VideoData[]> {
 
 async function downloadVideo(processId: string) {
   try {
+    console.log("Downloading video");
     const response = await axios.get(
       `${apiBaseUrl}/api/v1/video/download/${processId}`,
+      { responseType: "blob" }, // Specify responseType as 'blob'
     );
 
     const blob = new Blob([response.data], { type: "video/mp4" });
