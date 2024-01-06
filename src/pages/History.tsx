@@ -76,7 +76,7 @@ export default function History() {
                     <ReactPlayer
                       url={video.video.fileUrl}
                       width='100%'
-                      maxHeight='250px'
+                      maxheight='250px'
                       controls
                     />
                   </div>
