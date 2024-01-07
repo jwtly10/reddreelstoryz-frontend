@@ -1,5 +1,11 @@
+html {
+    background-color: rgb(20, 20, 20);
+    height: 100%;
+}
+
 body {
     background-color: rgb(20, 20, 20);
+    height: 100%;
 }
 
 .navbar {
@@ -21,26 +27,13 @@ body {
     color: red;
 }
 
-/*!* Default size for smaller screens *!*/
-@media screen and (min-width: 600px) {
-    .ant-card-cover img {
-        width: 100%;
-        height: auto;
-    }
-}
-
-/*!* Larger size for bigger screens *!*/
-@media screen and (min-width: 1400px) {
-    .ant-card-cover img {
-        width: 100% !important;
-        height: auto !important;
-    }
-
-    .ant-card {
-        width: 400px !important;
-    }
-}
-
-.ant-card p {
+.video-card-desc p {
     margin: 0;
+    font-size: 1rem;
+}
+
+@media (max-width: 576px) {
+    .video-card-desc {
+        padding-top: 20px; /* Adjust the value as needed */
+    }
 }
