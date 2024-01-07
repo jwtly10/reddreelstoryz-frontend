@@ -1,12 +1,19 @@
-html {
+html{
     background-color: rgb(20, 20, 20);
     height: 100%;
 }
 
-body {
+body{
     background-color: rgb(20, 20, 20);
-    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+
+#root {
+    min-height: 100vh;
+}
+
 
 .navbar {
     background-color: rgb(20, 20, 20) !important;
@@ -36,4 +43,10 @@ body {
     .video-card-desc {
         padding-top: 20px; /* Adjust the value as needed */
     }
+}
+
+footer {
+    margin-top:auto;
+    bottom: 0;
+    width: 100%;
 }
