@@ -1,42 +1,52 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 import {
   deleteVideo,
   downloadVideo,
   getHistory,
-} from '../service/BackendService.ts'
-import { Col, notification, Row } from 'antd'
-import { Container } from 'react-bootstrap'
-import VideoCardComponent from '../components/VideoCardComponent.tsx'
-import { Link } from 'react-router-dom'
+} from "../service/BackendService.ts";
+import { Col, notification, Row } from "antd";
+import { Container } from "react-bootstrap";
+import VideoCardComponent from "../components/VideoCardComponent.tsx";
+import { Link } from "react-router-dom";
 
 export default function History() {
-  const [videos, setVideos] = useState<VideoData[]>([])
-  const [downloading, setDownloading] = useState(false)
-  const [api, contextHolder] = notification.useNotification()
+  const [videos, setVideos] = useState<VideoData[]>([]);
+  const [downloading, setDownloading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+
+  // TODO: Implement a refresh button that handlesGettingVideo without having to refresh page
 
   useEffect(() => {
-    handleGetVideo()
-  }, [])
+    handleGetVideo();
+
+    // Timer to fetch updates every 30 seconds
+    const timerId = setInterval(() => {
+      handleGetVideo();
+    }, 30000);
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(timerId);
+  }, []);
 
   const handleGetVideo = () => {
     getHistory()
       .then((res) => {
-        setVideos(res)
+        setVideos(res);
       })
-      .catch((error) => console.log(error))
-  }
+      .catch((error) => console.log(error));
+  };
 
   const handleDownloadVideo = async (processId: string) => {
-    setDownloading(true)
+    setDownloading(true);
     await downloadVideo(processId).then(() => {
-      setDownloading(false)
-    })
-  }
+      setDownloading(false);
+    });
+  };
 
   const handleDeleteVideo = async (processId: string, title: string) => {
     await deleteVideo(processId).then(() => {
       api.open({
-        message: 'Video deleted',
+        message: "Video deleted",
         description: (
           <div>
             <p>
@@ -45,17 +55,17 @@ export default function History() {
           </div>
         ),
         duration: 10,
-      })
-    })
+      });
+    });
 
-    handleGetVideo()
-  }
+    handleGetVideo();
+  };
 
   return (
     <>
       {contextHolder}
       <Container>
-        <div className='d-flex mt-5 mb-5 flex-column justify-content-center text-center'>
+        <div className="d-flex mt-5 mb-5 flex-column justify-content-center text-center">
           <h1>History</h1>
           <p>
             Videos will be auto-deleted after 7 days. Download the ones you want
@@ -63,14 +73,14 @@ export default function History() {
           </p>
         </div>
         {videos.length === 0 ? (
-          <div className='d-flex flex-column justify-content-center text-center'>
+          <div className="d-flex flex-column justify-content-center text-center">
             <h3>No videos yet</h3>
             <p>
-              <Link to={'/generate'}>Generate</Link> a video to see it here
+              <Link to={"/generate"}>Generate</Link> a video to see it here
             </p>
           </div>
         ) : (
-          <Row gutter={[10, 30]} justify='center' align='middle'>
+          <Row gutter={[10, 30]} justify="center" align="middle">
             {videos.map((video: VideoData, index) => (
               <Col xs={24} sm={24} md={24} key={index}>
                 <VideoCardComponent
@@ -85,5 +95,5 @@ export default function History() {
         )}
       </Container>
     </>
-  )
+  );
 }

@@ -12,8 +12,10 @@ export default function ManualGenComponent() {
   const [error, setError] = useState("");
   const [api, contextHolder] = notification.useNotification();
   const bgOptions = ["Minecraft Parkour", "Mirrors Edge"];
+  const [loading, setLoading] = useState(false);
 
   const handleGeneration = (values: any) => {
+    setLoading(true);
     console.log("Values" + values);
     // Build request body
     const req: ManualGenRequest = {
@@ -28,9 +30,11 @@ export default function ManualGenComponent() {
       .then((res) => {
         handleQueuedVideo(res);
         setError("");
+        setLoading(false);
       })
       .catch((error) => {
         setError(error.message);
+        setLoading(false);
       });
   };
 
@@ -117,7 +121,7 @@ export default function ManualGenComponent() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loading}>
               Generate video
             </Button>
           </Form.Item>
