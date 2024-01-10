@@ -1,6 +1,5 @@
 declare type Video = {
   videoId: string;
-  title: string;
   fileName: string;
   fileUrl: string;
   length: int;
@@ -11,6 +10,7 @@ declare type Video = {
 
 declare type VideoData = {
   video: Video;
+  title: string;
   state: string;
   error: string;
   userId: number;
