@@ -52,7 +52,7 @@ function NavbarComponent() {
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto"></Nav>
+            <Nav className="ms-auto"></Nav>
             {isAuthenticated ? (
               <Nav>
                 <Nav.Link as={NavLink} to={"/generate"}>

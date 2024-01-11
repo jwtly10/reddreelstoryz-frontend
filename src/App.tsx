@@ -15,7 +15,11 @@ function App() {
     }
   }, [login, isAuthenticated]);
 
-  return <AppRouter />;
+  return (
+    <>
+      <AppRouter />
+    </>
+  );
 }
 
 export default App;

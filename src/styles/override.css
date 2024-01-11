@@ -1,0 +1,89 @@
+footer {
+    margin-top: auto;
+    bottom: 0;
+    width: 100%;
+}
+
+.ant-input {
+    background-color: #181A1B !important;
+    border: 1px solid grey !important;
+    padding: 1rem !important;
+    border-radius: 10px;
+}
+
+.ant-input-password input {
+    background-color: #181A1B !important;
+    border: 1px solid grey !important;
+    padding: 1rem !important;
+    border-radius: 10px;
+}
+
+.ant-input-password {
+    background-color: #181A1B !important;
+    border-radius: 10px;
+}
+
+.ant-input-affix-wrapper {
+    padding: 0 11px !important;
+}
+
+/*ant-select-selection-search*/
+
+.ant-select-selector {
+    background-color: #181A1B !important;
+    border: 1px solid grey !important;
+    padding: 1.5rem !important;
+    border-radius: 10px;
+}
+
+.ant-select-selection-search-input {
+    background-color: #181A1B !important;
+    border-color: pink !important;
+    padding: 1rem !important;
+    border-radius: 10px;
+}
+
+.ant-form-item-control-input-content {
+    background-color: #181A1B !important;
+    border-color: #424242 !important;
+    border-radius: 10px;
+}
+
+.ant-card-body {
+    background-color: #181A1B !important;
+    border-radius: 1rem !important;
+}
+
+
+.ant-input:focus {
+    border-color: #007ACA !important;
+}
+
+.ant-input:focus, textarea:focus {
+    -webkit-transition: all 0.20s ease-in-out;
+    -moz-transition: all 0.20s ease-in-out;
+    -ms-transition: all 0.20s ease-in-out;
+    -o-transition: all 0.20s ease-in-out;
+    border-color: #007ACA;
+}
+
+.ant-btn-primary {
+    background-color: #007ACA;
+    border-radius: 15px;
+}
+
+.generate {
+    padding: 2rem 3rem;
+    display: flex;
+    align-items: center;
+    margin: 1rem auto auto;
+    border-radius: 30px;
+}
+
+.ant-form-item-required {
+    display: none;
+}
+
+.dropdown-override .ant-form-item-explain-error {
+    margin-top: 1rem;
+}

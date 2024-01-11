@@ -3,6 +3,7 @@ import { Button, Form, Input, notification, Select } from "antd";
 import { useState } from "react";
 import { generateFromRedditURL } from "../service/BackendService.ts";
 import { Link } from "react-router-dom";
+import debug from "../utils/debug.ts";
 
 export default function RedditUrlGenComponent() {
   const [url, setUrl] = useState("");
@@ -14,7 +15,7 @@ export default function RedditUrlGenComponent() {
 
   const handleGeneration = (values: any) => {
     setLoading(true);
-    console.log(values.url);
+    debug(values.url);
     // Clear error
     setError("");
 
@@ -70,6 +71,7 @@ export default function RedditUrlGenComponent() {
           name="reddit-url-generation-form"
           onFinish={handleGeneration}
           onFinishFailed={() => {}}
+          className="col-12 col-sm-6 col-md-6 m-auto"
         >
           <Form.Item
             label="Reddit Url"
@@ -79,12 +81,17 @@ export default function RedditUrlGenComponent() {
               "https://www.reddit.com/r/AmItheAsshole/comments/1905uij/aita_for_not_continuing_my_reception_after_my/"
             }
           >
-            <Input value={url} onChange={(e) => setUrl(e.target.value)} />
+            <Input
+              placeholder="e.g. https://www.reddit.com/r/AmItheAsshole/comments/1905uij/aita_for_not_continuing_my_reception_after_my/"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
           </Form.Item>
 
           <Form.Item
             label="Background Video"
             name="backgroundVideo"
+            className="dropdown-override"
             rules={[
               { required: true, message: "Please select a background video" },
             ]}
@@ -99,8 +106,23 @@ export default function RedditUrlGenComponent() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading}>
+            <Button
+              className="generate"
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+            >
               Generate video
+              <span
+                style={{
+                  paddingLeft: "1rem",
+                  paddingBottom: "5px",
+                  fontSize: 20,
+                }}
+              >
+                {" "}
+                👉🏻
+              </span>
             </Button>
           </Form.Item>
         </Form>

@@ -4,6 +4,7 @@ import { generateFromCustomScript } from "../service/BackendService.ts";
 import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import TextArea from "antd/es/input/TextArea";
+import debug from "../utils/debug.ts";
 
 export default function ManualGenComponent() {
   const [title, setTitle] = useState("");
@@ -16,7 +17,7 @@ export default function ManualGenComponent() {
 
   const handleGeneration = (values: any) => {
     setLoading(true);
-    console.log("Values" + values);
+    debug("Values" + values);
     // Build request body
     const req: ManualGenRequest = {
       title: values.title,
@@ -72,13 +73,19 @@ export default function ManualGenComponent() {
           name="custom-generation-form"
           onFinish={handleGeneration}
           onFinishFailed={() => {}}
+          className="col-12 col-sm-6 col-md-6 m-auto"
         >
           <Form.Item
-            label="Title"
+            label="Video Title"
             name="title"
             rules={[{ required: true, message: "Please enter a title" }]}
           >
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            <TextArea
+              placeholder="e.g AITA for leaving my dog alone at home all day?"
+              value={title}
+              rows={2}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </Form.Item>
 
           <Form.Item
@@ -87,6 +94,7 @@ export default function ManualGenComponent() {
             rules={[{ required: true, message: "Please enter a subreddit" }]}
           >
             <Input
+              placeholder="e.g. r/AITA"
               value={subreddit}
               onChange={(e) => setSubreddit(e.target.value)}
             />
@@ -98,6 +106,7 @@ export default function ManualGenComponent() {
             rules={[{ required: true, message: "Please enter video content" }]}
           >
             <TextArea
+              placeholder="e.g. Your video content.."
               rows={4}
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -107,6 +116,7 @@ export default function ManualGenComponent() {
           <Form.Item
             label="Background Video"
             name="backgroundVideo"
+            className="dropdown-override"
             rules={[
               { required: true, message: "Please select a background video" },
             ]}
@@ -121,8 +131,23 @@ export default function ManualGenComponent() {
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading}>
+            <Button
+              className="generate"
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+            >
               Generate video
+              <span
+                style={{
+                  paddingLeft: "1rem",
+                  paddingBottom: "5px",
+                  fontSize: 20,
+                }}
+              >
+                {" "}
+                👉🏻
+              </span>
             </Button>
           </Form.Item>
         </Form>

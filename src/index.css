@@ -1,23 +1,39 @@
-html{
-    background-color: rgb(20, 20, 20);
+* {
+    font-family: 'Poppins', sans-serif !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    background-color: rgb(24, 26, 27) !important;
     height: 100%;
 }
 
-body{
-    background-color: rgb(20, 20, 20);
+body {
+    background-color: rgb(24, 26, 27) !important;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700 !important;
 }
 
 #root {
     min-height: 100vh;
 }
 
-
 .navbar {
-    background-color: rgb(20, 20, 20) !important;
-    border-bottom: solid #164c7e 3px;
+    /*background-color: rgb(20, 20, 20) !important;*/
+    background-color: rgb(24, 26, 27) !important;
+    border: 1px solid rgba(26, 26, 26, 0.3);
 }
 
 .link {
@@ -45,8 +61,11 @@ body{
     }
 }
 
-footer {
-    margin-top:auto;
-    bottom: 0;
-    width: 100%;
+.active {
+    /*background-color: #333; !* Change this to your desired active color *!*/
+    color: #fff; /* Change this to your desired text color for active link */
+}
+
+::-webkit-scrollbar {
+    width: 0;
 }

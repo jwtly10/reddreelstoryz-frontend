@@ -33,7 +33,7 @@ function LoginModalComponent({
       try {
         await signup(firstname, lastname, email, password);
         handleClose();
-        navigate("/history");
+        navigate("/generate");
       } catch (error: any) {
         setErrorText(error.message);
       } finally {

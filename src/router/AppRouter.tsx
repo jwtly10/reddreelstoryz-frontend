@@ -4,12 +4,12 @@ import History from "../pages/History.tsx";
 import NavbarComponent from "../components/NavbarComponent.tsx";
 import { useAuth } from "../contexts/AuthContext.tsx";
 import Generate from "../pages/Generate.tsx";
-import { Footer } from "antd/es/layout/layout";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import SessionExpiredModalComponent from "../components/SessionExpiredModalComponent.tsx";
 import debug from "../utils/debug.ts";
 import LoginModalComponent from "../components/LoginModalComponent.tsx";
+import { Footer } from "antd/es/layout/layout";
 
 export default function AppRouter() {
   const { isAuthenticated, logout } = useAuth();
@@ -60,34 +60,45 @@ export default function AppRouter() {
   };
 
   return (
-    <BrowserRouter>
-      <NavbarComponent />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        {isAuthenticated ? (
-          <>
-            <Route path="/generate" element={<Generate />} />
-            <Route path="/history" element={<History />} />
-          </>
-        ) : (
-          <>
-            <Route path="/generate" element={<Navigate to="/" />} />
-            <Route path="/history" element={<Navigate to="/" />} />
-          </>
-        )}
-      </Routes>
-      <Footer style={{ textAlign: "center" }} className="mt-5">
-        ai-content-generator ©{new Date().getFullYear()}{" "}
-      </Footer>
-      <SessionExpiredModalComponent
-        showModal={showPopup}
-        handleOk={() => {
-          setShowPopup(false);
-          logout();
-          setShowLoginModal(true);
-        }}
-      />
-      <LoginModalComponent handleClose={handleClose} open={showLoginModal} />
-    </BrowserRouter>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
+      <BrowserRouter>
+        <NavbarComponent />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          {isAuthenticated ? (
+            <>
+              <Route path="/generate" element={<Generate />} />
+              <Route path="/history" element={<History />} />
+            </>
+          ) : (
+            <>
+              <Route path="/generate" element={<Navigate to="/" />} />
+              <Route path="/history" element={<Navigate to="/" />} />
+            </>
+          )}
+        </Routes>
+
+        <SessionExpiredModalComponent
+          showModal={showPopup}
+          handleOk={() => {
+            setShowPopup(false);
+            logout();
+            setShowLoginModal(true);
+          }}
+        />
+        <LoginModalComponent handleClose={handleClose} open={showLoginModal} />
+        <div style={{ textAlign: "center", marginTop: "auto" }}>
+          <Footer style={{ marginTop: "5rem" }}>
+            ai-content-generator ©{new Date().getFullYear()}{" "}
+          </Footer>
+        </div>
+      </BrowserRouter>
+    </div>
   );
 }
