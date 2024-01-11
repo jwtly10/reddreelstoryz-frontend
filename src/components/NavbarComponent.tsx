@@ -2,7 +2,7 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { useAuth } from "../contexts/AuthContext";
 import LoginModalComponent from "./LoginModalComponent";
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 function NavbarComponent() {
   const navigate = useNavigate();
@@ -12,15 +12,15 @@ function NavbarComponent() {
 
   useEffect(() => {
     // Check if the user is not authenticated and trying to access a protected route
-    // TODO: Fix this interaction with the authcontext sessionexpirationmodal
     if (!isAuthenticated && location.pathname.startsWith("/history")) {
-      setShowLoginModal(true);
+      navigate("/");
     }
 
     if (!isAuthenticated && location.pathname.startsWith("/generate")) {
-      setShowLoginModal(true);
+      // setShowLoginModal(true);
+      navigate("/");
     }
-  }, [isAuthenticated, location.pathname]);
+  }, [isAuthenticated, location.pathname, navigate]);
 
   const handleLoginButtonClick = () => {
     setShowLoginModal(true);
@@ -55,18 +55,10 @@ function NavbarComponent() {
             <Nav className="me-auto"></Nav>
             {isAuthenticated ? (
               <Nav>
-                <Nav.Link
-                  as={Link}
-                  to={"/generate"}
-                  className="text-decoration-none text-white"
-                >
+                <Nav.Link as={NavLink} to={"/generate"}>
                   Generate
                 </Nav.Link>
-                <Nav.Link
-                  as={Link}
-                  to={"/history"}
-                  className="text-decoration-none text-white"
-                >
+                <Nav.Link as={NavLink} to={"/history"}>
                   History
                 </Nav.Link>
                 <Nav.Link onClick={handleLogoutButtonClick}>Logout</Nav.Link>

@@ -1,10 +1,11 @@
 import axios from "axios";
 import GenerationError from "../exceptions/GenerationError.ts";
+import debug from "../utils/debug.ts";
 
 const apiBaseUrl = import.meta.env.VITE_SERVER_URL as string;
 
 async function generateFromRedditURL(req: RedditRequest): Promise<string> {
-  console.log("Generating video from redditURL");
+  debug("Generating video from redditURL");
   try {
     const response = await axios.post(
       `${apiBaseUrl}/api/v1/video/generate/reddit`,
@@ -24,7 +25,7 @@ async function generateFromCustomScript(
   req: ManualGenRequest,
 ): Promise<string> {
   try {
-    console.log("Generating video from custom script");
+    debug("Generating video from custom script");
     const response = await axios.post(`${apiBaseUrl}/api/v1/video/generate`, {
       title: req.title,
       subreddit: req.subreddit,
@@ -40,13 +41,13 @@ async function generateFromCustomScript(
 
 function handleGenerationError(error: any) {
   const errorResponse = error.response.data as { error: string } | undefined;
-  console.log(error);
+  debug(error);
   if (errorResponse) {
     const errorMessage = errorResponse.error;
-    console.log(`Generation failed: ${errorMessage}}`);
+    debug(`Generation failed: ${errorMessage}}`);
     throw new GenerationError(errorMessage);
   } else {
-    console.log(`Generation failed: Unknown Error`);
+    debug(`Generation failed: Unknown Error`);
     throw new Error("Unknown Error");
   }
 }
@@ -56,11 +57,11 @@ async function getHistory(): Promise<VideoData[]> {
     let videos: VideoData[] = [];
     const response = await axios.get(`${apiBaseUrl}/api/v1/video/getVideos`);
     videos = response.data.videos;
-    console.log(videos);
+    debug(videos);
     return videos;
   } catch (error) {
     // handle error
-    console.log("Error fetching history: " + error);
+    console.error("Error fetching history: " + error);
   }
 
   return [];
@@ -68,11 +69,11 @@ async function getHistory(): Promise<VideoData[]> {
 
 async function deleteVideo(processId: string) {
   try {
-    console.log("Deleting video");
+    debug("Deleting video");
     const response = await axios.delete(
       `${apiBaseUrl}/api/v1/video/delete/${processId}`,
     );
-    console.log(response);
+    debug(response);
   } catch (error) {
     console.error("Error deleting video:", error);
   }
@@ -80,7 +81,7 @@ async function deleteVideo(processId: string) {
 
 async function downloadVideo(processId: string) {
   try {
-    console.log("Downloading video");
+    debug("Downloading video");
     const response = await axios.get(
       `${apiBaseUrl}/api/v1/video/download/${processId}`,
       { responseType: "blob" }, // Specify responseType as 'blob'

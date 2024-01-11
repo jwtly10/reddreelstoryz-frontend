@@ -49,7 +49,7 @@ function LoginModalComponent({
         if (error instanceof AuthError) {
           setErrorText(error.message);
         } else {
-          console.log(error);
+          console.error(error);
           setErrorText("Something went wrong");
         }
       } finally {

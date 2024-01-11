@@ -9,6 +9,7 @@ import axios, { AxiosError } from "axios";
 import AuthError from "../exceptions/AuthError.ts";
 import SessionExpiredModalComponent from "../components/SessionExpiredModalComponent.tsx";
 import { jwtDecode } from "jwt-decode";
+import debug from "../utils/debug.ts";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -53,15 +54,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    console.log("Are we checking for a token?");
     if (!storedToken) {
-      console.log("No token stored, no current session");
+      debug("No token stored, no current session");
     } else {
       if (validateTokenLocally(storedToken)) {
         setIsAuthenticated(true);
       } else {
-        console.log("Token is not valid, please log out");
-        // setShowSessionsExpiredModal(true);
+        console.error("Token is not valid, please log out");
+        logout();
+        setShowSessionsExpiredModal(true);
       }
     }
 
@@ -69,6 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = async (email: string, password: string): Promise<void> => {
+    debug("Logging in");
     try {
       const response = await axios.post(
         `${apiBaseUrl}/api/v1/auth/authenticate`,
@@ -93,7 +95,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     email: string,
     password: string,
   ) => {
-    console.log("Signing up");
+    debug("Signing up");
     try {
       const response = await axios.post(`${apiBaseUrl}/api/v1/auth/register`, {
         firstname,
@@ -111,7 +113,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
-    console.log("Logging out");
+    debug("Logging out");
     // Delete local storage token
     localStorage.removeItem("token");
     // Remove token from axios
@@ -160,10 +162,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         | undefined;
       if (errorResponse) {
         const errorMessage = errorResponse.error;
-        console.log(`Login failed: ${errorMessage}}`);
+        console.error(`Login failed: ${errorMessage}}`);
         throw new AuthError(errorMessage);
       } else {
-        console.log(`Login failed: Unknown Error`);
+        console.error(`Login failed: Unknown Error`);
         throw new Error("Unknown Error");
       }
     }

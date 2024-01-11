@@ -14,18 +14,16 @@ export default function History() {
   const [downloading, setDownloading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
-  // TODO: Implement a refresh button that handlesGettingVideo without having to refresh page
-
   useEffect(() => {
     handleGetVideo();
 
-    // Timer to fetch updates every 30 seconds
-    const timerId = setInterval(() => {
-      handleGetVideo();
-    }, 30000);
-
-    // Cleanup the interval on component unmount
-    return () => clearInterval(timerId);
+    // // Timer to fetch updates every 30 seconds
+    // const timerId = setInterval(() => {
+    //   handleGetVideo();
+    // }, 30000);
+    //
+    // // Cleanup the interval on component unmount
+    // return () => clearInterval(timerId);
   }, []);
 
   const handleGetVideo = () => {
@@ -33,7 +31,7 @@ export default function History() {
       .then((res) => {
         setVideos(res);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   };
 
   const handleDownloadVideo = async (processId: string) => {
