@@ -25,7 +25,6 @@ async function generateFromCustomScript(
 ): Promise<string> {
   try {
     console.log("Generating video from custom script");
-    req.backgroundVideo = "TODO";
     const response = await axios.post(`${apiBaseUrl}/api/v1/video/generate`, {
       title: req.title,
       subreddit: req.subreddit,
