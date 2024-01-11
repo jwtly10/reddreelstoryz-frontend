@@ -101,10 +101,27 @@ async function downloadVideo(processId: string) {
   }
 }
 
+
+async function subscribe(email: string){
+  try {
+        debug("Subscribing email");
+        const response = await axios.post(
+        `${apiBaseUrl}/api/v1/newsletter/subscribe`,
+        { email },
+        );
+        debug(response);
+        return response;
+    } catch (error) {
+        console.error("Error subscribing email:", error);
+        return error;
+    }
+}
+
 export {
   getHistory,
   downloadVideo,
   generateFromRedditURL,
   generateFromCustomScript,
   deleteVideo,
+  subscribe
 };

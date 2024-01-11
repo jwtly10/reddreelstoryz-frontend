@@ -87,3 +87,32 @@ footer {
 .dropdown-override .ant-form-item-explain-error {
     margin-top: 1rem;
 }
+
+.subscribe-btn {
+    margin: 0;
+}
+
+.strong {
+    font-weight: 700 !important;
+}
+
+.landing-card {
+    background-color: #181A1B !important;
+}
+
+@media (min-width: 576px) {
+    .landing-card {
+        padding: 2rem 10rem 2rem 10rem;
+        background-color: #181A1B !important;
+    }
+}
+
+
+@media (max-width: 576px) {
+    .landing-container {
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
