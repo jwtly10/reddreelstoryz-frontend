@@ -11,6 +11,7 @@ declare type Video = {
 declare type VideoData = {
   video: Video;
   title: string;
+  subreddit: string;
   state: string;
   error: string;
   userId: number;

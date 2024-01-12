@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import LoginModalComponent from "./LoginModalComponent";
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/logo-circle.png";
 
 function NavbarComponent() {
   const navigate = useNavigate();
@@ -46,8 +47,13 @@ function NavbarComponent() {
       >
         <Container>
           <Navbar.Brand>
-            <Link to={"/"} className="text-decoration-none text-white">
-              Ai-Content-Generator
+            <Link to={"/"} className="text-decoration-none text-white d-flex">
+              <img
+                src={logo}
+                style={{ height: 30, marginRight: "10px" }}
+                alt={"Logo Img"}
+              ></img>
+              ReddReelStoryz
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />

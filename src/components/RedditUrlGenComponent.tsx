@@ -77,9 +77,6 @@ export default function RedditUrlGenComponent() {
             label="Reddit Url"
             name="url"
             rules={[{ required: true, message: "Please enter a reddit URL" }]}
-            initialValue={
-              "https://www.reddit.com/r/AmItheAsshole/comments/1905uij/aita_for_not_continuing_my_reception_after_my/"
-            }
           >
             <Input
               placeholder="e.g. https://www.reddit.com/r/AmItheAsshole/comments/1905uij/aita_for_not_continuing_my_reception_after_my/"

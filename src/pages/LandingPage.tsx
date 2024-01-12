@@ -2,6 +2,7 @@ import { Container, Navbar, NavItem } from "react-bootstrap";
 import { Button, Card, Form, Input } from "antd";
 import { Footer } from "antd/es/layout/layout";
 import landing_page_video from "../assets/landing_page_video.mp4";
+import logo from "../assets/logo-circle.png";
 import { subscribe } from "../service/BackendService.ts";
 import { useState } from "react";
 import debug from "../utils/debug.ts";
@@ -55,8 +56,13 @@ export default function LandingPage() {
         >
           <Container>
             <Navbar.Brand>
-              <NavItem className="text-decoration-none text-white">
-                Ai-Content-Generator
+              <NavItem className="text-decoration-none text-white d-flex">
+                <img
+                  src={logo}
+                  style={{ height: 30, marginRight: "10px" }}
+                  alt={"Logo img"}
+                ></img>
+                ReddReelStoryz
               </NavItem>
             </Navbar.Brand>
           </Container>
@@ -107,10 +113,7 @@ export default function LandingPage() {
             </Form>
             <p className={error ? "text-danger" : "text-success"}>{response}</p>
             <p>
-              🚀{" "}
-              <strong>
-                AI Content Generator - Your gateway to instant reach
-              </strong>{" "}
+              🚀 <strong>ReddReelStoryz - Your gateway to instant reach</strong>{" "}
               🚀
             </p>{" "}
             <ReactPlayer
@@ -122,7 +125,15 @@ export default function LandingPage() {
           </Card>
         </Container>
         <div style={{ textAlign: "center", marginTop: "auto" }}>
-          <Footer>ai-content-generator ©{new Date().getFullYear()} </Footer>
+          <Footer>
+            <a
+              style={{ marginRight: 10, textDecoration: "none" }}
+              target="_blank"
+              href="https://www.tiktok.com/@reddreelstoryz"
+            >
+              @ReddReelStoryz
+            </a>
+          </Footer>
         </div>
       </div>
     </>

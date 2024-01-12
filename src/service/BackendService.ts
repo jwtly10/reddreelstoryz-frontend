@@ -14,6 +14,7 @@ async function generateFromRedditURL(req: RedditRequest): Promise<string> {
         backgroundVideo: req.backgroundVideo,
       },
     );
+    debug(response)
     return response.data.processId;
   } catch (error: any) {
     handleGenerationError(error);
@@ -32,6 +33,7 @@ async function generateFromCustomScript(
       content: req.content,
       backgroundVideo: req.backgroundVideo,
     });
+    debug(response)
     return response.data.processId;
   } catch (error: any) {
     handleGenerationError(error);

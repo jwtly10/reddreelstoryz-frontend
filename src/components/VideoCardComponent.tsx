@@ -48,9 +48,13 @@ export default function VideoCardComponent({
       <div>
         <p className="error">{error}</p>
         <p>
-          If this message isn't useful please get in contact at <br></br>
-          <a href="contact@ai-content-generator.com">
-            contact@ai-content-generator.com
+          If this message isn't useful please contact us on TikTok:<br></br>
+          <a
+            style={{ textDecoration: "none" }}
+            target="_blank"
+            href="https://www.tiktok.com/@reddreelstoryz"
+          >
+            @reddreelstoryz
           </a>
         </p>
       </div>
@@ -95,6 +99,7 @@ export default function VideoCardComponent({
               {video.state === "COMPLETED" ? (
                 <>
                   <h5>{video.title}</h5>
+                  <h6>{video.subreddit}</h6>
                   <p>
                     <b>Length: </b>
                     {` ${video.video.length} seconds`}
@@ -104,7 +109,7 @@ export default function VideoCardComponent({
                     {` ${formatDate(video.video.created)}`}
                   </p>
                   <p>
-                    <b>Uploaded: </b>
+                    <b>Generated: </b>
                     {` ${formatDate(video.video.uploadDate)}`}
                   </p>
                   <br />

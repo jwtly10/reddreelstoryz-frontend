@@ -4,7 +4,7 @@ import ManualGenComponent from "../components/ManualGenComponent.tsx";
 import RedditUrlGenComponent from "../components/RedditUrlGenComponent.tsx";
 
 export default function Generate() {
-  const [redditUrlMode, setRedditUrlMode] = useState(false);
+  const [redditUrlMode, setRedditUrlMode] = useState(true);
 
   const handleRedditUrlMode = () => {
     setRedditUrlMode(!redditUrlMode);
@@ -32,7 +32,7 @@ export default function Generate() {
             Or maybe you want to{" "}
             <span className={"link"} onClick={handleRedditUrlMode}>
               {" "}
-              manually enter a script
+              manually add a script
             </span>
             .
           </p>

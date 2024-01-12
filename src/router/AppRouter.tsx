@@ -95,7 +95,14 @@ export default function AppRouter() {
         <LoginModalComponent handleClose={handleClose} open={showLoginModal} />
         <div style={{ textAlign: "center", marginTop: "auto" }}>
           <Footer style={{ marginTop: "5rem" }}>
-            ai-content-generator ©{new Date().getFullYear()}{" "}
+            <a
+              style={{ marginRight: 10, textDecoration: "none" }}
+              target="_blank"
+              href="https://www.tiktok.com/@reddreelstoryz"
+            >
+              @ReddReelStoryz
+            </a>
+            ©{new Date().getFullYear()}{" "}
           </Footer>
         </div>
       </BrowserRouter>

@@ -42,7 +42,7 @@ h1 {
 
 .link {
     color: #007bff; /* Link color */
-    text-decoration: underline; /* Underline to mimic a link */
+    text-decoration: none; /* Underline to mimic a link */
     cursor: pointer; /* Show pointer cursor on hover */
 }
 
