@@ -4,6 +4,8 @@ import debug from "../utils/debug.ts";
 
 const apiBaseUrl = import.meta.env.VITE_SERVER_URL as string;
 
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
 async function generateFromRedditURL(req: RedditRequest): Promise<string> {
   debug("Generating video from redditURL");
   try {
