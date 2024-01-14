@@ -151,7 +151,9 @@ export default function VideoCardComponent({
                 <Button
                   type="primary"
                   danger
-                  disabled={video.state === "PROCESSING"}
+                  disabled={
+                    video.state === "PROCESSING" || video.state === "PENDING"
+                  }
                   onClick={() =>
                     handleDeleteClick(video.video.videoId, video.title)
                   }

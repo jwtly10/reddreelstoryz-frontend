@@ -30,6 +30,7 @@ export default function RedditUrlGenComponent() {
         handleQueuedVideo(res);
         setError("");
         setLoading(false);
+        setUrl("");
       })
       .catch((error) => {
         setError(error.message);

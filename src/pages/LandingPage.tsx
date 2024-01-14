@@ -59,7 +59,10 @@ export default function LandingPage() {
               <NavItem className="text-decoration-none text-white d-flex">
                 <img
                   src={logo}
-                  style={{ height: 30, marginRight: "10px" }}
+                  style={{
+                    height: 30,
+                    marginRight: "10px",
+                  }}
                   alt={"Logo img"}
                 ></img>
                 ReddReelStoryz
@@ -99,7 +102,10 @@ export default function LandingPage() {
                   { required: true, message: "Don't forget your email! 🙂" },
                 ]}
               >
-                <Input placeholder="e.g. janedoe@mail.com" />
+                <Input
+                  style={{ textAlign: "center" }}
+                  placeholder="e.g. janedoe@mail.com"
+                />
               </Form.Item>
 
               <Button
